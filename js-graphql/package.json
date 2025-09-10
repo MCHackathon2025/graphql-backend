@@ -1,0 +1,38 @@
+{
+  "name": "js-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "MIT",
+  "author": "CommitSudoku",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "depcheck": "depcheck ",
+    "dev": "nodemon src/index.js",
+    "format": "pnpm run format/js && pnpm run format/properties && pnpm run format/yaml",
+    "format/js": "prettier --write \"./**/*.{js,ts,css,json}\" --config ./.prettierrc",
+    "format/properties": "find . -name '*.properties' -print -exec sort -o {} {} \\;",
+    "format/yaml": "git ls-files '*.yml' '*.yaml' | xargs -t -I {} yq -i -S -Y . {}",
+    "lint": "eslint src/*.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@graphql-tools/graphql-file-loader": "^8.0.0",
+    "@graphql-tools/load": "^8.0.0",
+    "graphql": "^16.8.1",
+    "graphql-yoga": "^5.0.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "depcheck": "^1.4.7",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.53.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.1.0",
+    "prettier-plugin-packagejson": "^2.4.6",
+    "prettier-plugin-sort-json": "^3.1.0"
+  }
+}

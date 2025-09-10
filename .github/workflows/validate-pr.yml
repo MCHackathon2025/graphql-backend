@@ -1,0 +1,36 @@
+jobs:
+  validate:
+    name: Forbidden changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - id: changed-files
+        name: Get changed files
+        uses: tj-actions/changed-files@v24
+        with:
+          files: |
+            .githooks/*
+            .github/*
+            .*
+            *.properties
+            **/*.graphql
+            Makefile
+            package-lock.json
+            package.json
+      - if: steps.changed-files.outputs.any_modified == 'true'
+        name: Check unexpected changes in file
+        run: |
+          # shellcheck disable=SC2043
+          for i in ${{ steps.changed-files.outputs.all_modified_files }}; do
+            echo "::warning file=$i::Need manual approval for changes"
+          done
+          exit 1
+name: Validate PR
+'on':
+  pull_request:
+    branches:
+      - main
+      - dev

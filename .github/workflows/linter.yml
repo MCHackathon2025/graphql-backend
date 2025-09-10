@@ -1,0 +1,32 @@
+jobs:
+  superlint:
+    name: Super-linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install Deps
+        run: make install
+      - env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.json
+          LINTER_RULES_PATH: /
+          TYPESCRIPT_ES_CONFIG_FILE: .eslintrc.json
+          VALIDATE_CSS: false
+          VALIDATE_JSON: false
+          VALIDATE_TYPESCRIPT_STANDARD: false
+        name: Lint Code Base
+        uses: github/super-linter/slim@v4
+name: Linters
+'on':
+  pull_request:
+    branches:
+      - main
+      - dev
+  push:
+    branches:
+      - main
+      - dev
