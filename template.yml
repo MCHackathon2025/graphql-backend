@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Outputs:
+  UserTableName:
+    Description: "The name of the DynamoDB UserTable"
+    Value: !Ref UserTable
+Resources:
+  GraphQL:
+    Properties:
+      CodeUri: js-graphql
+      Runtime: nodejs22.x
+      Handler: src/index.handler
+      Timeout: 30
+      Events:
+        HttpGet:
+          Properties:
+            Method: GET
+            Path: /graphql
+          Type: Api
+        HttpPost:
+          Properties:
+            Method: POST
+            Path: /graphql
+          Type: Api
+        HttpPut:
+          Properties:
+            Method: PUT
+            Path: /graphql
+          Type: Api
+    Type: AWS::Serverless::Function
+  UserTable:
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+      BillingMode: PROVISIONED
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+    Type: AWS::DynamoDB::Table
+Transform: AWS::Serverless-2016-10-31
