@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-//TODO: no hardcode and exposed secret...
+// TODO: no hardcode and exposed secret...
 const SECRET = 'abc';
 
 const baseContext = async ({ request }) => {
@@ -13,6 +13,7 @@ const baseContext = async ({ request }) => {
       throw new Error('Your session expired. Please sign in again.');
     }
   }
+  return {};
 };
 
 export default baseContext;
