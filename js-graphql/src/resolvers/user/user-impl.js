@@ -21,7 +21,7 @@ const getUserByUsername = async (username) => {
 
 const getUserById = async (id) => {
   const command = new GetItemCommand({
-    TableName: USER_TABLE,
+    TableName: USER_ID_TABLE_NAME,
     Key: {
       id: {
         S: id,

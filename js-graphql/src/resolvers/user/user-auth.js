@@ -4,7 +4,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import { v4 as uuidv4 } from 'uuid';
 import { DynamoDBClient, PutItemCommand, GetItemCommand } from '@aws-sdk/client-dynamodb';
-import { getUserByUsername } from './user-impl.js';
+import { getUserByUsername, getUserById } from './user-impl.js';
+const { unmarshall } = require("@aws-sdk/util-dynamodb");
 
 const { USER_ID_TABLE_NAME } = process.env;
 //TODO: No hardcode region
@@ -58,4 +59,10 @@ const loginUser = async (_p, { input }) => {
   return { token: await createToken({ id: user.Item.id.S }) };
 }
 
-export { registerUser, loginUser };
+const meResolver = async (_p, _a, { me }) => {
+  const user = await getUserById(me.id);
+  // TODO: remove the password...
+  return unmarshall(user.Item);
+};
+
+export { registerUser, loginUser, meResolver };

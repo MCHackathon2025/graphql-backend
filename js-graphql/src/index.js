@@ -3,12 +3,14 @@ import { pipeline } from 'stream/promises'
 
 import typeDefs from './schemas/index.js';
 import resolvers from './resolvers/index.js';
+import baseContext from './contexts/baseContext.js';
 
 const yoga = createYoga({
   schema: createSchema({
     typeDefs: await typeDefs,
     resolvers,
   }),
+  context: baseContext,
   graphqlEndpoint: '/',
   cors: {
     origin: '*',
