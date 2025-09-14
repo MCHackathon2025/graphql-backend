@@ -14,6 +14,8 @@ Parameters:
     Type: String
   UserIdTableName:
     Type: String
+  UserIdTableUsernameGsiName:
+    Type: String
 Resources:
   GraphQL:
     Properties:
@@ -24,6 +26,7 @@ Resources:
       Environment:
         Variables:
           USER_ID_TABLE_NAME: !Ref 'UserIdTableName'
+          USER_ID_TABLE_USERNAME_GSI_NAME: !Ref 'UserIdTableUsernameGsiName'
       Events:
         HttpGet:
           Properties:
