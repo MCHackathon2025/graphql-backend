@@ -1,8 +1,11 @@
 SHELL:=/bin/bash
 
-all:
+all: install format	lint
+
+install:
 	git config core.hooksPath .githooks
 	for i in $$(ls -d [jt]s-*/); do pushd $$i; pnpm install --prod --no-optional && make; popd; done
+
 
 lint:
 	for i in $$(ls -d [jt]s-*/); do pushd $$i; make lint; popd; done
