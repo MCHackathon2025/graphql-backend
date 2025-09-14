@@ -2,14 +2,29 @@ AWSTemplateFormatVersion: '2010-09-09'
 Outputs:
   UserTableName:
     Description: "The name of the DynamoDB UserTable"
-    Value: !Ref UserTable
+    Value: !Ref UserIdTable
+Description: |
+  Dev:
+  ```
+  export SS=mchack ENV=dev SN=graphql-backend; yes | sam deploy --resolve-s3 --s3-prefix=$SS --stack-name $SS-$SN -t ./template.yml --parameter-overrides StackName=$SN StackSet=$SS `cat development.properties` WorkaroundSubSSM=$(date --iso-8601=s)
+  ```
+Parameters:
+  StackName:
+    Type: String
+  StackSet:
+    Type: String
+  ENV:
+    Type: String
 Resources:
   GraphQL:
     Properties:
-      CodeUri: js-graphql
+      CodeUri: ./js-graphql
       Runtime: nodejs22.x
       Handler: src/index.handler
       Timeout: 30
+      Environment:
+        Variables:
+          USER_ID_TABLE_NAME: !Ref 'UserIdTable'
       Events:
         HttpGet:
           Properties:
@@ -27,7 +42,7 @@ Resources:
             Path: /graphql
           Type: Api
     Type: AWS::Serverless::Function
-  UserTable:
+  UserIdTable:
     Properties:
       AttributeDefinitions:
         - AttributeName: "id"
@@ -40,4 +55,16 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
     Type: AWS::DynamoDB::Table
+  UserIdTableArn:
+    Properties:
+      Name: !Sub '/${StackSet}/${ENV}/${StackName}/dynamodb/user-id-table/arn'
+      Type: String
+      Value: !GetAtt 'UserIdTable.Arn'
+    Type: AWS::SSM::Parameter
+  UserIdTableName:
+    Properties:
+      Name: !Sub '/${StackSet}/${ENV}/${StackName}/dynamodb/user-id-table/table-name'
+      Type: String
+      Value: !Ref UserIdTable
+    Type: AWS::SSM::Parameter
 Transform: AWS::Serverless-2016-10-31
