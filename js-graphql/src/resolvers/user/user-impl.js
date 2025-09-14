@@ -1,7 +1,7 @@
 import { DynamoDBClient, QueryCommand, GetItemCommand } from '@aws-sdk/client-dynamodb';
 
 const { USER_ID_TABLE_NAME, USER_ID_TABLE_USERNAME_GSI_NAME } = process.env;
-//TODO: No hardcode region
+// TODO: No hardcode region
 const dynamoDBClient = new DynamoDBClient({ region: 'ap-east-2' });
 
 const getUserByUsername = async (username) => {
@@ -27,7 +27,7 @@ const getUserById = async (id) => {
       },
     },
   });
-  return await dynamoDBClient.send(command);
+  return dynamoDBClient.send(command);
 };
 
 export { getUserById, getUserByUsername };
