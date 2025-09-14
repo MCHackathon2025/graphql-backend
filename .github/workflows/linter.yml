@@ -12,9 +12,9 @@ jobs:
       - env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.json
+          JAVASCRIPT_ES_CONFIG_FILE: ./js-graphql/.eslintrc.json
           LINTER_RULES_PATH: /
-          TYPESCRIPT_ES_CONFIG_FILE: .eslintrc.json
+          TYPESCRIPT_ES_CONFIG_FILE: ./js-graphql/.eslintrc.json
           VALIDATE_CSS: false
           VALIDATE_JSON: false
           VALIDATE_TYPESCRIPT_STANDARD: false
