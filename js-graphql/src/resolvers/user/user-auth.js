@@ -5,11 +5,11 @@ const jwt = require('jsonwebtoken');
 import { v4 as uuidv4 } from 'uuid';
 import { DynamoDBClient, PutItemCommand, GetItemCommand } from '@aws-sdk/client-dynamodb';
 import { getUserByUsername, getUserById } from './user-impl.js';
-const { unmarshall } = require("@aws-sdk/util-dynamodb");
+const { unmarshall } = require('@aws-sdk/util-dynamodb');
 
 const { USER_ID_TABLE_NAME } = process.env;
 //TODO: No hardcode region
-const dynamoDBClient = new DynamoDBClient({region: "ap-east-2"});
+const dynamoDBClient = new DynamoDBClient({ region: 'ap-east-2' });
 
 //TODO: No hardcode and exposed secret...
 const createToken = async ({ id }) => jwt.sign({ id }, 'abc', { expiresIn: '1d' });
@@ -40,15 +40,15 @@ const registerUser = async (_p, { input }) => {
     },
   });
   const response = await dynamoDBClient.send(command);
-  console.log( USER_ID_TABLE_NAME );
+  console.log(USER_ID_TABLE_NAME);
   return { id, username };
-}
+};
 
 const loginUser = async (_p, { input }) => {
-  const { username, password }  = input;
-  console.log("username:", username, " password: ", password);
+  const { username, password } = input;
+  console.log('username:', username, ' password: ', password);
   const user = await getUserByUsername(username);
-  console.log("user:", user)
+  console.log('user:', user);
 
   if (!user) throw Error('User Not Found!');
 
@@ -57,7 +57,7 @@ const loginUser = async (_p, { input }) => {
   if (!isPasswordValid) throw Error('Wrong Password!');
 
   return { token: await createToken({ id: user.Item.id.S }) };
-}
+};
 
 const meResolver = async (_p, _a, { me }) => {
   const user = await getUserById(me.id);

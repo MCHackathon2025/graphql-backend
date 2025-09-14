@@ -6,11 +6,11 @@ Description: |
   export SS=mchack SN=graphql-backend; sam local start-api -t ./local-api.yml --parameter-overrides StackName=$SN StackSet=$SS `cat ../development.properties ../parameters.properties` WorkaroundSubSSM=$(date --iso-8601=s) --host 0.0.0.0 -l lambda.log
   ```
 Parameters:
+  ENV:
+    Type: String
   StackName:
     Type: String
   StackSet:
-    Type: String
-  ENV:
     Type: String
   UserIdTableName:
     Type: String
@@ -20,9 +20,6 @@ Resources:
   GraphQL:
     Properties:
       CodeUri: ./
-      Runtime: nodejs22.x
-      Handler: src/index.handler
-      Timeout: 30
       Environment:
         Variables:
           USER_ID_TABLE_NAME: !Ref 'UserIdTableName'
@@ -43,6 +40,8 @@ Resources:
             Method: PUT
             Path: /graphql
           Type: Api
+      Handler: src/index.handler
+      Runtime: nodejs22.x
+      Timeout: 30
     Type: AWS::Serverless::Function
 Transform: AWS::Serverless-2016-10-31
-
