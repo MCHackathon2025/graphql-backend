@@ -1,11 +1,10 @@
 import { registerUser, loginUser, meResolver } from './user-auth.js';
 
-
 export const Mutation = {
   register: registerUser,
-  login: loginUser
+  login: loginUser,
 };
 
 export const Query = {
   me: meResolver,
-}
+};
