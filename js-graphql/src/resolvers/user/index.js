@@ -1,6 +1,7 @@
-import { userRegister } from './user-auth.js';
+import { registerUser, loginUser } from './user-auth.js';
 
 
 export const Mutation = {
-  register: userRegister
+  register: registerUser,
+  login: loginUser
 };
