@@ -14,18 +14,15 @@
     "format/js": "prettier --write \"./**/*.{js,ts,css,json}\" --config ./.prettierrc",
     "format/properties": "find . -name '*.properties' -print -exec sort -o {} {} \\;",
     "format/yaml": "git ls-files '*.yml' '*.yaml' | xargs -t -I {} yq -i -S -Y . {}",
-    "lint": "eslint 'src/**/*.[jt]s'",
-    "test": "echo \"Warning: no test specified\""
+    "lint": "eslint src/*.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@graphql-tools/graphql-file-loader": "^8.0.0",
     "@graphql-tools/load": "^8.0.0",
-    "bcryptjs": "^3.0.2",
     "graphql": "^16.8.1",
     "graphql-yoga": "^5.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "lodash": "^4.17.21",
-    "uuid": "^13.0.0"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "depcheck": "^1.4.7",

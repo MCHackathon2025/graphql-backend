@@ -5,13 +5,6 @@
     "node": true
   },
   "extends": ["airbnb-base"],
-  "globals": {
-    "awslambda": "readonly"
-  },
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
   "rules": {
     "import/extensions": [
       "error",
@@ -19,8 +12,6 @@
         "js": "ignorePackages"
       }
     ],
-    "import/no-unresolved": ["error", { "ignore": ["^@aws-sdk/"] }],
-    "max-len": ["warn", { "code": 120 }],
     "semi": ["error", "always"]
   }
 }

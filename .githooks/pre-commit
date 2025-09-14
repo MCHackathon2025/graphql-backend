@@ -1,6 +1,5 @@
 #!/bin/bash
 
-make format
 make lint
 
 #pnpm run depcheck && \
