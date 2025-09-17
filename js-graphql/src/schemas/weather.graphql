@@ -1,0 +1,15 @@
+type Weather {
+  humidity: Float
+  temperature: Float
+  time: String
+  region: String
+}
+
+input GetWeatherInput {
+  region: String
+  time: String
+}
+
+type Query {
+  getWeather(input: GetWeatherInput): Weather
+}
