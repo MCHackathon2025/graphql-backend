@@ -8,6 +8,8 @@ Description: |
 Parameters:
   ENV:
     Type: String
+  EventIdTableName:
+    Type: String
   StackName:
     Type: String
   StackSet:
@@ -22,6 +24,7 @@ Resources:
       CodeUri: ./
       Environment:
         Variables:
+          EVENT_ID_TABLE_NAME: !Ref 'EventIdTableName'
           USER_ID_TABLE_NAME: !Ref 'UserIdTableName'
           USER_ID_TABLE_USERNAME_GSI_NAME: !Ref 'UserIdTableUsernameGsiName'
       Events:
