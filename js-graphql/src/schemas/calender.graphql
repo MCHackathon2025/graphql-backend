@@ -1,0 +1,39 @@
+enum EventType {
+  USER_CREATE
+  BROADCAST
+  AI_SUGGESTION
+  AI_RECOMMENDATION
+}
+
+type Event {
+  eventId: ID!
+  ownerId: ID!
+  title: String!
+  startTime: String!
+  endTime: String!
+  createTime: String!
+  description: String
+  participants: [User!]
+  type: EventType!
+}
+
+input GetEventInput {
+  eventId: String!
+}
+
+input CreateEventInput {
+  title: String!
+  startTime: String!
+  endTime: String!
+  description: String
+  participants: [String!]
+  type: EventType
+}
+
+type Query {
+  getEvent(input: GetEventInput): Event
+}
+
+type Mutation {
+  createEvent(input: CreateEventInput): Event
+}
