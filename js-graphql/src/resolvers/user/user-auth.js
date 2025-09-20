@@ -14,6 +14,7 @@ const { USER_ID_TABLE_NAME } = process.env;
 const dynamoDBClient = new DynamoDBClient({ region: 'ap-east-2' });
 
 // TODO: No hardcode and exposed secret...
+// Consider AWS Secret Manager lol
 const createToken = async ({ id }) => jwt.sign({ id }, 'abc', { expiresIn: '1d' });
 
 const registerUser = async (_p, { input }) => {
