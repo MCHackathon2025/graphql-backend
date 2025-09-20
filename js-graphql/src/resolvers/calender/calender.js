@@ -71,15 +71,15 @@ const deleteEvent = async (_, { input }, { me }) => {
   // TODO: Authroity Check
   // if (!me) throw new Error("Unauthorized");
 
-  const { eventID } = input;
+  const { eventId } = input;
 
   const command = new DeleteItemCommand({
     TableName: EVENT_ID_TABLE_NAME,
-    Key: { eventId: { S: eventID } },
+    Key: { eventId: { S: eventId } },
   });
 
   await dynamoDBClient.send(command);
-  return `Event ${eventID} deleted successfully.`;
+  return `Event ${eventId} deleted successfully.`;
 };
 
 const getUserEvent = async ({ id }) => {
@@ -96,4 +96,22 @@ const getUserEvent = async ({ id }) => {
   return Items.map(item => unmarshall(item));
 }
 
-export { createEvent, getUserEvent, deleteEvent, updateEvent };
+const getEvent = async (_p, { input }) => {
+  // TODO: Authroity Check
+  // if (!me) throw new Error("Unauthorized");
+  const { eventId } = input;
+
+  const command = new GetItemCommand({
+    TableName: EVENT_ID_TABLE_NAME,
+    Key: { eventId: { S: eventId } }
+  });
+  console.log(command);
+
+
+  const { Item } = await dynamoDBClient.send(command);
+
+  console.log(Item);
+  return unmarshall(Item);
+}
+
+export { createEvent, getUserEvent, deleteEvent, updateEvent, getEvent };

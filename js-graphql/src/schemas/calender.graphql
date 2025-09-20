@@ -41,7 +41,7 @@ input UpdateEventInput {
 }
 
 input DeleteEventInput {
-  eventID: ID!
+  eventId: ID!
 }
 
 type Query {
