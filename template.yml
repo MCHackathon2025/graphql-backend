@@ -11,13 +11,13 @@ Outputs:
 Parameters:
   ENV:
     Type: String
+  EventIdTableUserGsiName:
+    Type: String
   StackName:
     Type: String
   StackSet:
     Type: String
   UserIdTableUsernameGsiName:
-    Type: String
-  EventIdTableUserGsiName:
     Type: String
 Resources:
   EventIdTable:
@@ -28,11 +28,8 @@ Resources:
         - AttributeName: ownerId
           AttributeType: S
       BillingMode: PROVISIONED
-      KeySchema:
-        - AttributeName: eventId
-          KeyType: HASH
       GlobalSecondaryIndexes:
-        - IndexName: !Ref EventIdTableUserGsiName
+        - IndexName: !Ref 'EventIdTableUserGsiName'
           KeySchema:
             - AttributeName: ownerId
               KeyType: HASH
@@ -43,6 +40,9 @@ Resources:
           ProvisionedThroughput:
             ReadCapacityUnits: 1
             WriteCapacityUnits: 1
+      KeySchema:
+        - AttributeName: eventId
+          KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
@@ -65,13 +65,18 @@ Resources:
       Environment:
         Variables:
           EVENT_ID_TABLE_NAME: !Ref 'EventIdTable'
+          EVENT_ID_TABLE_USER_GSI_NAME: !Ref 'EventIdTableUserGsiName'
           USER_ID_TABLE_NAME: !Ref 'UserIdTable'
           USER_ID_TABLE_USERNAME_GSI_NAME: !Ref 'UserIdTableUsernameGsiName'
-          EVENT_ID_TABLE_USER_GSI_NAME: !Ref 'EventIdTableUserGsiName'
       Events:
         HttpGet:
           Properties:
             Method: GET
+            Path: /graphql
+          Type: Api
+        HttpOptions:
+          Properties:
+            Method: OPTIONS
             Path: /graphql
           Type: Api
         HttpPost:
@@ -84,31 +89,26 @@ Resources:
             Method: PUT
             Path: /graphql
           Type: Api
-        HttpOptions:
-          Properties:
-            Method: OPTIONS
-            Path: /graphql
-          Type: Api
       Handler: src/index.handler
-      Runtime: nodejs22.x
-      Timeout: 30
       Policies:
-        - Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Action:
+        - Statement:
+            - Action:
                 - dynamodb:GetItem
                 - dynamodb:PutItem
                 - dynamodb:UpdateItem
                 - dynamodb:DeleteItem
                 - dynamodb:Query
                 - dynamodb:*
+              Effect: Allow
               Resource:
-                - !GetAtt UserIdTable.Arn
+                - !GetAtt 'UserIdTable.Arn'
                 - !Sub "${UserIdTable.Arn}/index/*"
-                - !GetAtt EventIdTable.Arn
+                - !GetAtt 'EventIdTable.Arn'
                 - !Sub "${EventIdTable.Arn}/index/*"
                 - arn:aws:dynamodb:*:*:table/*
+          Version: "2012-10-17"
+      Runtime: nodejs22.x
+      Timeout: 30
     Type: AWS::Serverless::Function
   UserIdTable:
     Properties:

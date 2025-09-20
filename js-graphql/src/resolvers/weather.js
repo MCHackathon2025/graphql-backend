@@ -4,10 +4,10 @@ const getWeather = async (_p, { input }) => {
   const url = `https://wttr.in/${encoded}?format=j1`;
 
   const res = await fetch(url, {
-    method: "GET",
+    method: 'GET',
     header: {
-      'Accept': 'application/json'
-    }
+      Accept: 'application/json',
+    },
   });
   const body = await res.json();
   const cur = body?.current_condition?.[0];
@@ -15,10 +15,11 @@ const getWeather = async (_p, { input }) => {
     temperature: cur.temp_C,
     humidity: cur.humidity,
     time,
-    region
-  }
-}
+    region,
+  };
+};
 
+// eslint-disable-next-line import/prefer-default-export
 export const Query = {
   getWeather,
-}
+};

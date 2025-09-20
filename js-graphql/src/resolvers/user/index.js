@@ -12,5 +12,5 @@ export const Query = {
 };
 
 export const User = {
-  events: getUserEvent
+  events: getUserEvent,
 };
