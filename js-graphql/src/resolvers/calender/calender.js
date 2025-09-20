@@ -1,6 +1,7 @@
 import { createRequire } from 'module';
 // eslint-disable-next-line import/no-unresolved
 import { v4 as uuidv4 } from 'uuid';
+import { GraphQLError } from 'graphql';
 import {
   DynamoDBClient,
   PutItemCommand,
@@ -60,7 +61,9 @@ const updateEvent = async (_p, { input }) => {
   });
 
   if (updateExpr.length === 0) {
-    throw new Error('No fields to update');
+    throw new GraphQLError("No fields to update.", {
+      extensions: { code: "NO_EVENT_UPDATE" }
+    });
   }
 
   const command = new UpdateItemCommand({
