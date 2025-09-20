@@ -5,6 +5,7 @@ type User {
   username: String!
   "Hashed password"
   password: String!
+  events: [Event!]
 }
 
 input RegisterInput {

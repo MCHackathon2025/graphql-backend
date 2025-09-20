@@ -10,6 +10,8 @@ Parameters:
     Type: String
   EventIdTableName:
     Type: String
+  EventIdTableUserGsiName:
+    Type: String
   StackName:
     Type: String
   StackSet:
@@ -18,8 +20,6 @@ Parameters:
     Type: String
   UserIdTableUsernameGsiName:
     Type: String
-  EventIdTableUserGsiName:
-    Type: String
 Resources:
   GraphQL:
     Properties:
@@ -27,9 +27,9 @@ Resources:
       Environment:
         Variables:
           EVENT_ID_TABLE_NAME: !Ref 'EventIdTableName'
+          EVENT_ID_TABLE_USER_GSI_NAME: !Ref 'EventIdTableUserGsiName'
           USER_ID_TABLE_NAME: !Ref 'UserIdTableName'
           USER_ID_TABLE_USERNAME_GSI_NAME: !Ref 'UserIdTableUsernameGsiName'
-          EVENT_ID_TABLE_USER_GSI_NAME: !Ref 'EventIdTableUserGsiName'
       Events:
         HttpGet:
           Properties:
