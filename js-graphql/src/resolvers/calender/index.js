@@ -1,5 +1,7 @@
-import { createEvent } from './calender.js';
+import { createEvent, updateEvent, deleteEvent } from './calender.js';
 
 export const Mutation = {
-  createEvent
+  createEvent,
+  updateEvent,
+  deleteEvent,
 }
