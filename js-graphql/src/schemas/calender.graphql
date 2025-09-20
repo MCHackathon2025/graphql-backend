@@ -30,10 +30,26 @@ input CreateEventInput {
   type: EventType
 }
 
+input UpdateEventInput {
+  eventID: ID!
+  title: String
+  startTime: String
+  endTime: String
+  description: String
+  participants: [String!]
+  type: EventType
+}
+
+input DeleteEventInput {
+  eventID: ID!
+}
+
 type Query {
   getEvent(input: GetEventInput): Event
 }
 
 type Mutation {
   createEvent(input: CreateEventInput): Event
+  updateEvent(input: UpdateEventInput): Event
+  deleteEvent(input: DeleteEventInput): String
 }

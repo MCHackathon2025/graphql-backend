@@ -1,7 +1,7 @@
 import { createRequire } from 'module';
 // eslint-disable-next-line import/no-unresolved
 import { v4 as uuidv4 } from 'uuid';
-import { DynamoDBClient, PutItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, PutItemCommand, QueryCommand, GetItemCommand, UpdateItemCommand, DeleteItemCommand } from '@aws-sdk/client-dynamodb';
 
 const require = createRequire(import.meta.url);
 const { marshall, unmarshall } = require('@aws-sdk/util-dynamodb');
@@ -32,6 +32,56 @@ const createEvent = async (_p, { input }, { me }) => {
   return data
 }
 
+const updateEvent = async (_p, { input }, { me }) => {
+  // TODO: Authroity Check
+  // if (!me) throw new Error("Unauthorized");
+  const { eventID, ...fields } = input;
+
+  const updateExpr = [];
+  const exprAttrValues = {};
+  const exprAttrNames = {};
+
+  Object.entries(fields).forEach(([key, value]) => {
+    if (value !== undefined) {
+      updateExpr.push(`#${key} = :${key}`);
+      exprAttrNames[`#${key}`] = key;
+      exprAttrValues[`:${key}`] =
+        Array.isArray(value) ? { L: value.map((v) => ({ S: v })) } : { S: String(value) };
+    }
+  });
+
+  if (updateExpr.length === 0) {
+    throw new Error("No fields to update");
+  }
+
+  const command = new UpdateItemCommand({
+    TableName: EVENT_ID_TABLE_NAME,
+    Key: { eventId: { S: eventID } },
+    UpdateExpression: `SET ${updateExpr.join(", ")}`,
+    ExpressionAttributeNames: exprAttrNames,
+    ExpressionAttributeValues: exprAttrValues,
+    ReturnValues: "ALL_NEW",
+  });
+
+  const { Attributes } = await dynamoDBClient.send(command);
+  return unmarshall(Attributes);
+}
+
+const deleteEvent = async (_, { input }, { me }) => {
+  // TODO: Authroity Check
+  // if (!me) throw new Error("Unauthorized");
+
+  const { eventID } = input;
+
+  const command = new DeleteItemCommand({
+    TableName: EVENT_ID_TABLE_NAME,
+    Key: { eventId: { S: eventID } },
+  });
+
+  await dynamoDBClient.send(command);
+  return `Event ${eventID} deleted successfully.`;
+};
+
 const getUserEvent = async ({ id }) => {
   const command = new QueryCommand({
     TableName: EVENT_ID_TABLE_NAME,
@@ -46,4 +96,4 @@ const getUserEvent = async ({ id }) => {
   return Items.map(item => unmarshall(item));
 }
 
-export { createEvent, getUserEvent };
+export { createEvent, getUserEvent, deleteEvent, updateEvent };
