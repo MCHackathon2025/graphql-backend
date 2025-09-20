@@ -49,6 +49,7 @@ input DeleteEventInput {
 
 type Query {
   getEvent(input: GetEventInput): Event
+  suggestEvent: Event
 }
 
 type Mutation {
