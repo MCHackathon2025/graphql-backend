@@ -33,7 +33,7 @@ const createEvent = async (_p, { input }, { me }) => {
     createTime: Date.now(),
     description: description ?? '',
     type,
-    location: place,
+    location: place ?? '',
   };
   const command = new PutItemCommand({
     TableName: EVENT_ID_TABLE_NAME,
