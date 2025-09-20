@@ -6,6 +6,7 @@ OUTPUT_FILE="parameters.properties"
 function resolveSSM() {
     declare -A params
     params["UserIdTableName"]="/$SS/$ENV/$SN/dynamodb/user-id-table/table-name"
+    params["EventIdTableName"]="/$SS/$ENV/$SN/dynamodb/event-id-table/table-name"
 
     if [ -f $OUTPUT_FILE ] ; then
         rm $OUTPUT_FILE

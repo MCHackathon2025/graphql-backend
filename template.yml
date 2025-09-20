@@ -18,11 +18,25 @@ Parameters:
   UserIdTableUsernameGsiName:
     Type: String
 Resources:
+  EventIdTable:
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "eventId"
+          AttributeType: "S"
+      BillingMode: PROVISIONED
+      KeySchema:
+        - AttributeName: "eventId"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+    Type: AWS::DynamoDB::Table
   GraphQL:
     Properties:
       CodeUri: ./js-graphql
       Environment:
         Variables:
+          EVENT_ID_TABLE_NAME: !Ref 'EventIdTable'
           USER_ID_TABLE_NAME: !Ref 'UserIdTable'
           USER_ID_TABLE_USERNAME_GSI_NAME: !Ref 'UserIdTableUsernameGsiName'
       Events:
@@ -81,5 +95,30 @@ Resources:
       Name: !Sub '/${StackSet}/${ENV}/${StackName}/dynamodb/user-id-table/table-name'
       Type: String
       Value: !Ref 'UserIdTable'
+    Type: AWS::SSM::Parameter
+  EventIdTable:
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: eventId
+        AttributeType: S
+      BillingMode: PROVISIONED
+      KeySchema:
+      - AttributeName: eventId
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+    Type: AWS::DynamoDB::Table
+  EventIdTableArn:
+    Properties:
+      Name: !Sub '/${StackSet}/${ENV}/${StackName}/dynamodb/event-id-table/arn'
+      Type: String
+      Value: !GetAtt 'EventIdTable.Arn'
+    Type: AWS::SSM::Parameter
+  EventIdTableName:
+    Properties:
+      Name: !Sub '/${StackSet}/${ENV}/${StackName}/dynamodb/event-id-table/table-name'
+      Type: String
+      Value: !Ref 'EventIdTable'
     Type: AWS::SSM::Parameter
 Transform: AWS::Serverless-2016-10-31
