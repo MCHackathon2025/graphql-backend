@@ -20,7 +20,7 @@ const dynamoDBClient = new DynamoDBClient({ region: 'ap-east-2' });
 
 const createEvent = async (_p, { input }, { me }) => {
   const {
-    title, startTime, endTime, description, type, location: place
+    title, startTime, endTime, description, type, location: place,
   } = input;
   const ownerId = me.id;
   const eventId = uuidv4();
@@ -61,8 +61,8 @@ const updateEvent = async (_p, { input }) => {
   });
 
   if (updateExpr.length === 0) {
-    throw new GraphQLError("No fields to update.", {
-      extensions: { code: "NO_EVENT_UPDATE" }
+    throw new GraphQLError('No fields to update.', {
+      extensions: { code: 'NO_EVENT_UPDATE' },
     });
   }
 

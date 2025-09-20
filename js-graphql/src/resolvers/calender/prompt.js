@@ -1,5 +1,4 @@
-export const TodayEventSuggestionPrompt = (today, todayEvents) => (
-`
+export const TodayEventSuggestionPrompt = (today, todayEvents) => `
 You are a calendar scheduler. Today is ${today}. The user's region/timezone is UTC+8.
 Working hours preference: 09:00–18:00 local time unless the task requires otherwise.
 All time output must be ISO 8601 in UTC (with 'Z'), and events must not overlap existing ones.
@@ -24,5 +23,4 @@ A valid respose example:
     "description": "Weekly team discussions.",
     "location": "Meeting Room 3B"
   }
-`
-);
+`;

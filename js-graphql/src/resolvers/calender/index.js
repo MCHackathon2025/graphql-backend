@@ -1,5 +1,5 @@
 import {
-  createEvent, updateEvent, deleteEvent, getEvent
+  createEvent, updateEvent, deleteEvent, getEvent,
 } from './calender.js';
 import { suggestEvent } from './suggestion.js';
 

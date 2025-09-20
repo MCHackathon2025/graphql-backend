@@ -2,8 +2,8 @@ import { createRequire } from 'module';
 // eslint-disable-next-line import/no-unresolved
 import { v4 as uuidv4 } from 'uuid';
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
-import { getUserByUsername, getUserById } from './user-impl.js';
 import { GraphQLError } from 'graphql';
+import { getUserByUsername, getUserById } from './user-impl.js';
 
 const require = createRequire(import.meta.url);
 const bcrypt = require('bcryptjs');
@@ -23,8 +23,8 @@ const registerUser = async (_p, { input }) => {
   // TODO: Use Transact to prevent race condition
   const isexist = await getUserByUsername(username);
   if (isexist) {
-    throw new GraphQLError("Username already exist.", {
-      extensions: { code: "USERNAME_EXIST" }
+    throw new GraphQLError('Username already exist.', {
+      extensions: { code: 'USERNAME_EXIST' },
     });
   }
 
@@ -56,16 +56,16 @@ const loginUser = async (_p, { input }) => {
   const user = await getUserByUsername(username);
 
   if (!user) {
-    throw new GraphQLError("User not found.", {
-      extensions: { code: "USER_NOT_FOUND" }
+    throw new GraphQLError('User not found.', {
+      extensions: { code: 'USER_NOT_FOUND' },
     });
   }
 
   const hashedPassword = user.Item.password.S;
   const isPasswordValid = await bcrypt.compare(password, hashedPassword);
   if (!isPasswordValid) {
-    throw new GraphQLError("Incorrect password.", {
-      extensions: { code: "INCORRECT_PASSWORD" }
+    throw new GraphQLError('Incorrect password.', {
+      extensions: { code: 'INCORRECT_PASSWORD' },
     });
   }
 
