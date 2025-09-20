@@ -13,3 +13,4 @@ lint:
 format:
 	for i in $$(ls -d [jt]s-*/); do pushd $$i; make format; popd; done
 	git ls-files '*.yml' '*.yaml' | xargs -t -I {} yq -i -S -Y . {}
+	git ls-files '*.properties' | xargs -I {} sh -c 'sort {} -o {}'
