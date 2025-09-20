@@ -18,6 +18,8 @@ const yoga = createYoga({
 });
 
 const classicHandler = async (event, context) => {
+  console.log('Event Body: ', JSON.parse(event.body));
+
   const response = await yoga.fetch(
     `http://${event.headers.host}${event.rawPath}${event.rawQueryString ? `?${event.rawQueryString}` : ''}`,
     {
@@ -28,6 +30,7 @@ const classicHandler = async (event, context) => {
     { event, context },
   );
 
+  console.log('Resp: ', response);
   return {
     statusCode: response.status,
     headers: Object.fromEntries(response.headers.entries()),
