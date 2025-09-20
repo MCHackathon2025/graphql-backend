@@ -67,6 +67,7 @@ Resources:
           EVENT_ID_TABLE_NAME: !Ref 'EventIdTable'
           USER_ID_TABLE_NAME: !Ref 'UserIdTable'
           USER_ID_TABLE_USERNAME_GSI_NAME: !Ref 'UserIdTableUsernameGsiName'
+          EVENT_ID_TABLE_USER_GSI_NAME: !Ref 'EventIdTableUserGsiName'
       Events:
         HttpGet:
           Properties:
@@ -86,6 +87,23 @@ Resources:
       Handler: src/index.handler
       Runtime: nodejs22.x
       Timeout: 30
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:*
+              Resource:
+                - !GetAtt UserIdTable.Arn
+                - !Sub "${UserIdTable.Arn}/index/*"
+                - !GetAtt EventIdTable.Arn
+                - !Sub "${EventIdTable.Arn}/index/*"
+                - arn:aws:dynamodb:*:*:table/*
     Type: AWS::Serverless::Function
   UserIdTable:
     Properties:
