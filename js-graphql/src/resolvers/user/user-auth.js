@@ -55,11 +55,19 @@ const loginUser = async (_p, { input }) => {
   const { username, password } = input;
   const user = await getUserByUsername(username);
 
-  if (!user) throw Error('User Not Found!');
+  if (!user) {
+    throw new GraphQLError("User not found.", {
+      extensions: { code: "USER_NOT_FOUND" }
+    });
+  }
 
   const hashedPassword = user.Item.password.S;
   const isPasswordValid = await bcrypt.compare(password, hashedPassword);
-  if (!isPasswordValid) throw Error('Wrong Password!');
+  if (!isPasswordValid) {
+    throw new GraphQLError("Incorrect password.", {
+      extensions: { code: "INCORRECT_PASSWORD" }
+    });
+  }
 
   return { token: await createToken({ id: user.Item.id.S }) };
 };
