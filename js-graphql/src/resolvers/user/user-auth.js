@@ -3,6 +3,7 @@ import { createRequire } from 'module';
 import { v4 as uuidv4 } from 'uuid';
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { getUserByUsername, getUserById } from './user-impl.js';
+import { GraphQLError } from 'graphql';
 
 const require = createRequire(import.meta.url);
 const bcrypt = require('bcryptjs');
@@ -19,11 +20,16 @@ const createToken = async ({ id }) => jwt.sign({ id }, 'abc', { expiresIn: '1d' 
 
 const registerUser = async (_p, { input }) => {
   const { username, email, password } = input;
-  // TODO: check existing user before register.
+  // TODO: Use Transact to prevent race condition
+  const isexist = await getUserByUsername(username);
+  if (isexist) {
+    throw new GraphQLError("Username already exist.", {
+      extensions: { code: "USERNAME_EXIST" }
+    });
+  }
 
   const id = uuidv4();
   const hashedPassword = await bcrypt.hash(password, Number(2));
-  // TODO: Use Transact to prevent race condition
   const command = new PutItemCommand({
     TableName: USER_ID_TABLE_NAME,
     Item: {
