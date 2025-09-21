@@ -46,8 +46,8 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-    Type: AWS::DynamoDB::Table
     DeletionPolicy: Retain
+    Type: AWS::DynamoDB::Table
   EventIdTableArn:
     Properties:
       Name: !Sub '/${StackSet}/${ENV}/${StackName}/dynamodb/event-id-table/arn'
@@ -135,8 +135,8 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-    Type: AWS::DynamoDB::Table
     DeletionPolicy: Retain
+    Type: AWS::DynamoDB::Table
   UserIdTableArn:
     Properties:
       Name: !Sub '/${StackSet}/${ENV}/${StackName}/dynamodb/user-id-table/arn'
