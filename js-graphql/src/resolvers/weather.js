@@ -1,5 +1,7 @@
 const getWeather = async (_p, { input }, context) => {
-  const { time, region, latitude, longitude } = input;
+  const {
+    time, region, latitude, longitude,
+  } = input;
   const { location: headerLocation } = context;
 
   let locationParam;
@@ -11,8 +13,9 @@ const getWeather = async (_p, { input }, context) => {
     finalRegion = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
   } else if (headerLocation && headerLocation.latitude && headerLocation.longitude) {
     locationParam = `${headerLocation.latitude},${headerLocation.longitude}`;
-    finalRegion = headerLocation.address || `${headerLocation.latitude.toFixed(4)}, ${headerLocation.longitude.toFixed(4)}`;
-    console.log('Using location from headers:', headerLocation);
+    finalRegion = headerLocation.address
+      || `${headerLocation.latitude.toFixed(4)}, ${headerLocation.longitude.toFixed(4)}`;
+    // console.log('Using location from headers:', headerLocation);
   } else if (region) {
     locationParam = region.trim();
     finalRegion = region;
@@ -54,14 +57,15 @@ const getLocation = async (_p, { input }, context) => {
   const { location: headerLocation } = context;
 
   // Use coordinates from input or fallback to headers
-  let lat, lng;
+  let lat;
+  let lng;
   if (latitude && longitude) {
     lat = latitude;
     lng = longitude;
   } else if (headerLocation && headerLocation.latitude && headerLocation.longitude) {
     lat = headerLocation.latitude;
     lng = headerLocation.longitude;
-    console.log('Using location from headers for reverse geocoding:', headerLocation);
+    // console.log('Using location from headers for reverse geocoding:', headerLocation);
   } else {
     throw new Error('Either latitude/longitude must be provided in input or location headers must be included');
   }
@@ -69,7 +73,7 @@ const getLocation = async (_p, { input }, context) => {
   try {
     // Use reverse geocoding to get address from coordinates
     const response = await fetch(
-      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`,
     );
 
     if (!response.ok) {
@@ -86,7 +90,7 @@ const getLocation = async (_p, { input }, context) => {
       timestamp: headerLocation?.timestamp || new Date().toISOString(),
     };
   } catch (error) {
-    console.warn('Reverse geocoding failed:', error);
+    // console.warn('Reverse geocoding failed:', error);
 
     // Return basic location info without address
     return {
@@ -99,7 +103,9 @@ const getLocation = async (_p, { input }, context) => {
   }
 };
 
-export const Query = {
+const Query = {
   getWeather,
   getLocation,
 };
+
+export default Query;

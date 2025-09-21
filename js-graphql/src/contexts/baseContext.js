@@ -19,7 +19,7 @@ function extractLocationFromHeaders(request) {
     longitude: parseFloat(lng),
     accuracy: parseFloat(request.headers.get('x-location-accuracy')) || null,
     address: request.headers.get('x-location-address') || null,
-    timestamp: parseInt(request.headers.get('x-location-timestamp')) || Date.now(),
+    timestamp: parseInt(request.headers.get('x-location-timestamp'), 10) || Date.now(),
   };
 }
 

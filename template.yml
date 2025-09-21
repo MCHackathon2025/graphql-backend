@@ -47,6 +47,7 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
     Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
   EventIdTableArn:
     Properties:
       Name: !Sub '/${StackSet}/${ENV}/${StackName}/dynamodb/event-id-table/arn'
@@ -107,7 +108,7 @@ Resources:
                 - !Sub "${EventIdTable.Arn}/index/*"
                 - arn:aws:dynamodb:*:*:table/*
           Version: "2012-10-17"
-      Runtime: nodejs22.x
+      Runtime: nodejs18.x
       Timeout: 30
     Type: AWS::Serverless::Function
   UserIdTable:
@@ -135,6 +136,7 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
     Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
   UserIdTableArn:
     Properties:
       Name: !Sub '/${StackSet}/${ENV}/${StackName}/dynamodb/user-id-table/arn'
