@@ -1,13 +1,13 @@
 import {
-  createEvent, updateEvent, deleteEvent, getEvent,
-} from './calender.js';
+  createEvent, updateEvent, deleteEvent, getEvent
+} from './calender.js'
 
 export const Query = {
-  getEvent,
-};
+  getEvent
+}
 
 export const Mutation = {
   createEvent,
   updateEvent,
-  deleteEvent,
-};
+  deleteEvent
+}
