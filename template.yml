@@ -21,6 +21,8 @@ Parameters:
     Type: String
 Resources:
   EventIdTable:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       AttributeDefinitions:
         - AttributeName: eventId
@@ -107,10 +109,12 @@ Resources:
                 - !Sub "${EventIdTable.Arn}/index/*"
                 - arn:aws:dynamodb:*:*:table/*
           Version: "2012-10-17"
-      Runtime: nodejs22.x
+      Runtime: nodejs18.x
       Timeout: 30
     Type: AWS::Serverless::Function
   UserIdTable:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       AttributeDefinitions:
         - AttributeName: "id"

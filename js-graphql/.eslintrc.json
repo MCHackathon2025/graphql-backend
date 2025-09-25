@@ -4,7 +4,9 @@
     "es2021": true,
     "node": true
   },
-  "extends": ["airbnb-base"],
+  "extends": [
+    "airbnb-base"
+  ],
   "globals": {
     "awslambda": "readonly"
   },
@@ -19,8 +21,27 @@
         "js": "ignorePackages"
       }
     ],
-    "import/no-unresolved": ["error", { "ignore": ["^@aws-sdk/"] }],
-    "max-len": ["warn", { "code": 120 }],
-    "semi": ["error", "always"]
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": [
+          "^@aws-sdk/",
+          "^jsonwebtoken$",
+          "^graphql-yoga$",
+          "^graphql$",
+          "^@graphql-tools/graphql-file-loader$",
+          "^@graphql-tools/load$"
+        ]
+      }
+    ],
+    "max-len": [
+      "warn",
+      {
+        "code": 120
+      }
+    ],
+    "semi": "off",
+    "comma-dangle": "off",
+    "space-before-function-paren": "off"
   }
 }

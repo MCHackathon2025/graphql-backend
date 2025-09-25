@@ -1,8 +1,8 @@
-import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader';
-import { loadSchema } from '@graphql-tools/load';
+import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
+import { loadSchema } from '@graphql-tools/load'
 
 const typeDefs = await loadSchema('./**/*.graphql', {
-  loaders: [new GraphQLFileLoader()],
-});
+  loaders: [new GraphQLFileLoader()]
+})
 
-export default typeDefs;
+export default typeDefs
